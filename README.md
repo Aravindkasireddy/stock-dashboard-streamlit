@@ -18,6 +18,25 @@ This app allows users to fetch, visualize, and analyze stock market data with li
 
 ☁️ Deployment-ready for AWS EC2
 
+🔑 Alpha Vantage API Key (Optional Fallback)
+
+This app uses Yahoo Finance as the primary data source. If Yahoo Finance rate-limits your requests, it will automatically fall back to Alpha Vantage.
+
+To enable Alpha Vantage fallback:
+
+Go to Alpha Vantage
+
+Click Get Your Free API Key
+
+Enter your name + email, and you’ll receive an API key instantly via email
+
+Copy that key and update your app.py file:
+
+ALPHA_VANTAGE_API_KEY = "YOUR_API_KEY_HERE"
+
+
+⚠️ Note: Free accounts allow 5 requests per minute and 500 requests per day.
+
 🛠️ Installation (Run Locally)
 
 Clone this repo
