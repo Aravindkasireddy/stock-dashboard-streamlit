@@ -116,7 +116,8 @@ sudo systemctl restart nginx
 
 📸 Screenshots
 
-Add your screenshots here for better visibility (e.g., stock chart and table).
+<img width="2048" height="1118" alt="image" src="https://github.com/user-attachments/assets/abacce8f-c8a4-4579-9b6e-e4c8c1e80bfb" />
+
 
 📜 License
 
