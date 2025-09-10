@@ -7,16 +7,30 @@ import requests
 # --------------------------------
 # CONFIG
 # --------------------------------
-ALPHA_VANTAGE_API_KEY = "7ZU12R56HB5EE65I"  # your key here
+ALPHA_VANTAGE_API_KEY = "YOUR_API_KEY_HERE"  # Replace with your Alpha Vantage key
 
 st.set_page_config(page_title="Stock Price Dashboard", layout="wide")
 st.title("📈 Stock Price Dashboard")
 
-# Sidebar
+# --------------------------------
+# Sidebar Widgets
+# --------------------------------
 st.sidebar.header("Stock Selection")
-ticker = st.sidebar.text_input("Enter Stock Ticker (e.g. AAPL, TSLA, MSFT):", "AAPL")
-start_date = st.sidebar.date_input("Start Date", pd.to_datetime("2023-01-01"))
-end_date = st.sidebar.date_input("End Date", pd.to_datetime("today"))
+
+ticker = st.sidebar.text_input(
+    "Enter Stock Ticker (e.g. AAPL, TSLA, MSFT):",
+    "AAPL"  # default
+)
+
+start_date = st.sidebar.date_input(
+    "Start Date", 
+    pd.to_datetime("2023-01-01")
+)
+
+end_date = st.sidebar.date_input(
+    "End Date", 
+    pd.to_datetime("today")
+)
 
 # --------------------------------
 # Yahoo Finance (cached)
@@ -43,9 +57,8 @@ def load_alpha_vantage(ticker, start, end):
         r = requests.get(url)
         data = r.json()
 
-        # 🔹 Handle API errors
         if "Note" in data:
-            st.warning("⏳ Alpha Vantage API limit reached (5 calls/min, 500/day). Please wait and try again.")
+            st.warning("⏳ Alpha Vantage API limit reached (5 calls/min, 500/day). Please try again later.")
             return pd.DataFrame()
         if "Error Message" in data:
             st.error("❌ Invalid ticker symbol for Alpha Vantage.")
@@ -54,7 +67,6 @@ def load_alpha_vantage(ticker, start, end):
             st.error("❌ No data returned from Alpha Vantage.")
             return pd.DataFrame()
 
-        # Convert to DataFrame
         df = pd.DataFrame.from_dict(data["Time Series (Daily)"], orient="index")
         df = df.rename(
             columns={
@@ -69,7 +81,7 @@ def load_alpha_vantage(ticker, start, end):
         df = df.sort_index()
         df = df.astype(float)
 
-        # 🔹 Filter to chosen date range
+        # Filter by chosen date range
         df = df[(df.index >= pd.to_datetime(start)) & (df.index <= pd.to_datetime(end))]
         return df
 
